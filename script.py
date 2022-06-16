@@ -111,7 +111,7 @@ def max_area_affected(areas_dict):
 
 max_area = max_area_affected(areas_count)
 
-print(max_area)
+#print(max_area)
 
 
 
@@ -122,7 +122,7 @@ def max_deaths(hurr_dict):
 
 max_death_cane = max_deaths(hurr_dict)
 
-print(max_death_cane)
+#print(max_death_cane)
 
 
 
@@ -131,8 +131,12 @@ print(max_death_cane)
 
 # write your catgeorize by mortality function here:
 
+hurricanes_by_mortality = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
+
+#pprint(hurr_dict)
+
 def mortality_rate_function(hurr_dict):
-    hurricanes_by_mortality = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
+
 
     mortality_scale = {0: 0,
                        1: 100,
@@ -140,11 +144,45 @@ def mortality_rate_function(hurr_dict):
                        3: 1000,
                        4: 10000}
 
+    for key_h, value_h in hurr_dict.items():
+        #pprint(hurr)
+        hurr_deaths = value_h["Death"]
 
+        for key, value in reversed(mortality_scale.items()):
+            #pass
+            if hurr_deaths > value:
+                hurricanes_by_mortality[key+1].append({key_h:value_h})
+
+
+mortality_rate_function(hurr_dict)
+
+#pprint(hurricanes_by_mortality)
 
 
 
 # write your greatest damage function here:
+
+def max_damage(hurr_dict):
+    max_key = ""
+    max_dmg = 0
+    for key, value in hurr_dict.items():
+        if isinstance(value["Damage"], float):
+            #print(f"{value['Damage']:,}")
+            if value["Damage"] > max_dmg:
+                max_dmg = value["Damage"]
+                max_key = key
+    #print(f"{max_dmg:,}")
+    return {max_key:hurr_dict[max_key]}
+
+max_damage_cane = max_damage(hurr_dict)
+
+pprint(max_damage_cane)
+
+'''
+for dmg in damages:
+    if isinstance(dmg, float):
+        print(f"{dmg:,.0f}")
+'''
 
 
 
@@ -153,3 +191,29 @@ def mortality_rate_function(hurr_dict):
 
 
 # write your catgeorize by damage function here:
+hurricanes_by_damage = {0:[],1:[],2:[],3:[],4:[],5:[]}
+
+def damage_rate_function(hurr_dict):
+
+    damage_scale = {0: 0,
+                    1: 100000000,
+                    2: 1000000000,
+                    3: 10000000000,
+                    4: 50000000000}
+
+    for key_h, value_h in hurr_dict.items():
+        #pprint(hurr)
+        hurr_dmg = value_h["Damage"]
+
+        if not isinstance(hurr_dmg, float):
+            continue
+
+        for key, value in reversed(damage_scale.items()):
+            #pass
+            if hurr_dmg > value:
+                hurricanes_by_damage[key+1].append({key_h:value_h})
+
+
+damage_rate_function(hurr_dict)
+
+pprint(hurricanes_by_damage)
